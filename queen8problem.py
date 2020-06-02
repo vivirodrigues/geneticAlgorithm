@@ -54,10 +54,11 @@ def horizontal(a,b,matrix):
 	colision = 0
 
 	for lin in range(len(matrix)):			
-			if lin == a:				
-				for col in range(len(matrix[0])):
-					if col > b and matrix[lin][col] == 1:				
-						colision += 1
+		if lin == a:				
+			for col in range(len(matrix[0])):
+				if col > b and matrix[lin][col] == 1:				
+					colision += 1
+	
 	return colision
 
 def diagonal(a,b,matrix):	

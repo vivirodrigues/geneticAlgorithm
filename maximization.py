@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import copy
 
 def calc_aptitude(a,b,c,d):
 	
@@ -33,25 +34,25 @@ def bestIndividual(fitness,population):
 	return population[indice]
 
 # decreases all aptitude values by the minimum value
-def windowing(aptitude):
-	
-	novaLista = []
-	minimo = min(aptitude)
-	for i in range(len(aptitude)):
-		valor = aptitude[i] - minimo
-		novaLista.append(valor)
-	return novaLista
+def windowing(fitness):
+        
+    newList = []
+    min1 = min(fitness)
+    for i in range(len(fitness)):
+        value = fitness[i] - min1
+        newList.append(value)
+    return newList
 
 # exponential transformation
 def expTransformation(fitness):
 
-	novaLista = []
+    newList = []
 
-	for i in range(len(fitness)):
-		valor = fitness[i] + 1
-		valor1 = valor ** (1/2)		
-		novaLista.append(valor1)	
-	return novaLista
+    for i in range(len(fitness)):
+        value = fitness[i] + 1
+        value1 = value ** (1/2)
+        newList.append(value1)
+    return newList
 
 def roulette(fitness,randomNumber,population):
 	
@@ -200,6 +201,7 @@ def mutation(individual, points, type):
 
 def nextGeneration(aptitude, lastGen):
 
+	before = copy.deepcopy(lastGen)
 	points = []
 	generation = []
 	length = len(aptitude)
@@ -224,7 +226,7 @@ def nextGeneration(aptitude, lastGen):
 	generation.append(mutated)
 	
 	# best individual
-	bestIndiv = bestIndividual(aptitude,lastGen)
+	bestIndiv = bestIndividual(aptitude,before)
 	#print("Best individual from last generation:", bestIndiv)
 	generation.append(bestIndiv)
 
