@@ -6,16 +6,16 @@ def fitnessPopulation(population):
 	
 	len_pop = len(population)
 	len_individuo = len(population[0])
-	aptitude = []
+	fitness = []
 	
 	for i in range(len_pop):
 		
 		matrix = transfMatrix(population[i])		
 		colisionVector = colision(population[i], matrix)		
-		fitness = notColision(colisionVector)				
-		aptitude.append(fitness)
+		aptitude = notColision(colisionVector)				
+		fitness.append(aptitude)
 		
-	return aptitude
+	return fitness
 
 def notColision(colision):
 		
@@ -31,9 +31,7 @@ def notColision(colision):
 
 def colision(vector, matrix):
 	
-	colision = []
-	colisiona = 0
-	#print(vector)
+	colision = []	
 
 	for i in range(len(vector)):
 		
@@ -107,7 +105,7 @@ def diagonal(a,b,matrix):
 def transfMatrix(vector):
 		
 	length = len(vector)
-	matrix = criaMatriz(length,length,0)	
+	matrix = createMatrix(length,length,0)	
 
 	for col in range(len(vector)):
 		var = vector[col]
@@ -124,7 +122,7 @@ def imprime_matriz(M):
   	for linha in M:
   		print("".join([str(i) for i in linha]))
 
-def criaMatriz(numLinhas, numColunas, valor):
+def createMatrix(numLinhas, numColunas, valor):
 	matriz = [] # lista vazia
 	for i in range(numLinhas):
 		linha = []
@@ -167,20 +165,20 @@ def expTransformation(aptitude):
 		novaLista.append(valor1)	
 	return novaLista
 
-def roulette(aptitude,randomNumber,population):
+def roulette(fitness,randomNumber,population):
 	
 	selected = []
-	sumAptitude = 0
+	sumFitness = 0
 
-	# sum of all valued of aptitude
-	for i in range(len(aptitude)):
-		sumAptitude += aptitude[i]
+	# sum of all valued of fitness
+	for i in range(len(fitness)):
+		sumFitness += fitness[i]
 	
 	# create a list with the probability value about each individual to be selected
 	probabilities = []
 	
-	for i in range(len(aptitude)):
-		probability = aptitude[i]/sumAptitude
+	for i in range(len(fitness)):
+		probability = fitness[i]/sumFitness
 		probabilities.append(probability)	
 		
 	# sort in ascending order
@@ -270,11 +268,11 @@ def selectIndiv(aptitude,amount,population):
 	elif len(selecteds) == 1: # if it is just one individual, it is not returned inside other list
 		return selecteds[0]
 
-def generativeFunction(vector, minAllele, maxAllele):
+def mutation(vector, min, max):
 	
-	newAllele = random.randrange(minAllele, maxAllele+1, 1)
-	newLocus = random.randrange(0, len(vector), 1)
-	vector[newLocus] = newAllele
+	allele = random.randrange(min, max+1, 1)
+	locus = random.randrange(0, len(vector), 1)
+	vector[locus] = allele
 	
 	return vector	
 
@@ -289,26 +287,20 @@ def nextGeneration(aptitude, lastGen):
 	
 	# crossover
 	amountParents = 2
-	selecteds = selectIndiv(aptitude,amountParents,lastGen)
-	#print("Selected individuals for crossover:",selecteds)
-	children = recombinationCrossover(selecteds,points)
-	#print("Children:", children)
+	selecteds = selectIndiv(aptitude,amountParents,lastGen)	
+	children = recombinationCrossover(selecteds,points)	
 	generation.append(children[0])
 	generation.append(children[1])
 
 	# mutation
-	amountIndividuals = 1
-	#typeMutation = 1 # sequencial swap
+	amountIndividuals = 1	
 	selected = selectIndiv(aptitude,amountIndividuals,lastGen)
-	mutated = generativeFunction(selected,0,7)
-	#print("Selected individual(s) for mutation:", selected)
-	#mutated = mutation(selected, points, typeMutation)	
-	generation.append(mutated)
+	mutated = mutation(selected,0,7)	
+	generation.append(mutated)		
 	
 	# best individual	
-	bestIndiv = bestIndividual(aptitude,before)
-	#print("Best individual from last generation:", bestIndiv)
-	generation.append(bestIndiv)
+	bestIndiv = bestIndividual(aptitude,before)	
+	generation.append(bestIndiv)	
 
 	return generation
 

@@ -1,32 +1,34 @@
 import random
 import numpy as np
 
-def fitness(a,b,c,d):
+def calc_aptitude(a,b,c,d):
 	
-	fitness = (5*a) - (3*b*c) + c - (2*d)
-	return fitness
-
-def calc_fitness(populacao):
-	
-	len_pop = len(populacao)
-	len_individuo = len(populacao[0])
-	aptitude = []
-	for i in range(len_pop):		
-		a = populacao[i][0]	
-		b = populacao[i][1]			
-		c = populacao[i][2]			
-		d = populacao[i][3]			
-		fitness1 = fitness(a,b,c,d)
-		aptitude.append(fitness1)
-		
+	aptitude = (5*a) - (3*b*c) + c - (2*d)
 	return aptitude
 
-def bestIndividual(aptitude,population):
+def calc_fitness(population):
 	
-	minimo = min(aptitude)	
-	for i in range(len(aptitude)):		
-		if aptitude[i] > minimo:			
-			minimo = aptitude[i]			
+	len_pop = len(population)
+	len_individuo = len(population[0])
+	fitness = []
+	for i in range(len_pop):		
+		a = population[i][0]	
+		b = population[i][1]			
+		c = population[i][2]			
+		d = population[i][3]			
+		aptitude1 = calc_aptitude(a,b,c,d)
+		fitness.append(aptitude1)
+		
+	return fitness
+
+def bestIndividual(fitness,population):
+	
+	minimo = fitness[0]
+	indice = 0
+
+	for i in range(len(fitness)):		
+		if fitness[i] > minimo:			
+			minimo = fitness[i]			
 			indice = i		
 	return population[indice]
 
@@ -41,30 +43,30 @@ def windowing(aptitude):
 	return novaLista
 
 # exponential transformation
-def expTransformation(aptitude):
+def expTransformation(fitness):
 
 	novaLista = []
 
-	for i in range(len(aptitude)):
-		valor = aptitude[i] + 1
+	for i in range(len(fitness)):
+		valor = fitness[i] + 1
 		valor1 = valor ** (1/2)		
 		novaLista.append(valor1)	
 	return novaLista
 
-def roulette(aptitude,randomNumber,population):
+def roulette(fitness,randomNumber,population):
 	
 	selected = []
 	sumAptitude = 0
 
-	# sum of all valued of aptitude
-	for i in range(len(aptitude)):
-		sumAptitude += aptitude[i]
+	# sum of all valued of fitness
+	for i in range(len(fitness)):
+		sumAptitude += fitness[i]
 	
 	# create a list with the probability value about each individual to be selected
 	probabilities = []
 	
-	for i in range(len(aptitude)):
-		probability = aptitude[i]/sumAptitude
+	for i in range(len(fitness)):
+		probability = fitness[i]/sumAptitude
 		probabilities.append(probability)	
 		
 	# sort in ascending order
@@ -78,17 +80,17 @@ def roulette(aptitude,randomNumber,population):
 			return population[a]
 
 # linear normalization
-def linearNormFuction(aptitude):
+#def linearNormFuction(fitness):
 	
-	idSort = np.argsort(aptitude)	
-	N = 20 # increment
-	i=0
+#	idSort = np.argsort(fitness)	
+#	N = 20 # increment
+#	i=0
 
-	for idValue in idSort:
-		aptitude[i] = (idValue)* N + 1
-		i=i+1	
+#	for idValue in idSort:
+#		fitness[i] = (idValue)* N + 1
+#		i=i+1	
 	
-	return aptitude
+#	return fitness
 
 def recombinationCrossover(parents,points):
 	
@@ -125,8 +127,8 @@ def recombinationCrossover(parents,points):
 
 	return child1,child2
 
-# select parents for crossover
-def selectIndiv(aptitude,amount,population):
+
+def selectIndiv(fitness,amount,population):
 		
 	quant = 0
 	selecteds = []
@@ -136,7 +138,7 @@ def selectIndiv(aptitude,amount,population):
 	
 		randomNumber = random.random()
 		#print("Random number generated:", randomNumber)
-		selected = roulette(aptitude,randomNumber,population) # select one individual by roulette		
+		selected = roulette(fitness,randomNumber,population) # select one individual by roulette		
 		if len(selecteds) > 0:
 			for j in range(len(selecteds)):					
 				if selecteds[j] == selected: # if the individual selected has already been stored
@@ -234,25 +236,24 @@ if __name__ == '__main__':
 
 	selecionados = []
 	population = [[0,1,1,0], [1,1,0,0], [1,0,1,1], [0,0,0,1]]
-	print("Initial population:", population)			
+	#print("Initial population:", population)			
 	
-	limit = 50
+	limit = 2000
 	end = False
 	generation = 1
 	
 	while end != True:
 
-		aptitude = calc_fitness(population)
-		linear = linearNormFuction(aptitude)
-		#aptitudeWindow = windowing(aptitude)	
-		#aptitudeExpTransf = expTransformation(aptitudeWindow)				
-		population = nextGeneration(linear, population) 
-		print("Generation",generation,":", population)
+		fitnessValues = calc_fitness(population) # fitness vector
+		#linear = linearNormFuction(fitnessValues)
+		aptitudeWindow = windowing(fitnessValues)	
+		aptitudeExpTransf = expTransformation(aptitudeWindow)				
+		population = nextGeneration(aptitudeExpTransf, population) 
+		#print("Generation",generation,":", population)
 		
-		for i in range(len(population)):
-			if population[i] == population[0] and population[i] == population[1] and population[i] == population[2]:
-				print("Convergence")
-				end = True
+		if population[0] == population[1] and population[1] == population[2] and population[2] == population[3]:
+			print("Convergence in generation", generation)
+			end = True
 							
 		if generation == limit:
 			print("Limit of generations reached")
