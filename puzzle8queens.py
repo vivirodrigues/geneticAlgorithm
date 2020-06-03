@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import copy
+import os
 
 def fitnessPopulation(population):
 	
@@ -373,3 +374,21 @@ if __name__ == '__main__':
 		generation += 1
 
 	print("Result: ", result, "Aptitude:", fitness[3])
+
+	if os.path.exists('trace.csv'):
+			os.remove('trace.csv')
+	for i in range(len(bestIndividuals)):
+		resultFile = open('trace.csv', 'a')
+		resultFile.write("{}{}{}{}{}{}{}{}".format(
+			i,";",
+			bestIndividuals[i],";",
+			worstIndividuals[i],";",
+			averageIndividuals[i],'\n'))
+		resultFile.close()
+
+	if os.path.exists('solution.csv'):
+			os.remove('solution.csv')
+	for i in range(len(result)):
+		resultFile = open('solution.csv', 'a')
+		resultFile.write("{}{}{}{}".format(i,';',result[i],'\n'))
+		resultFile.close()
