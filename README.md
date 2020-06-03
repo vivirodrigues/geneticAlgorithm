@@ -1,12 +1,5 @@
 ## 8-queens puzzle
 
-For the 8-queens puzzle we want to obtain a board with 8 queens positioned so as not to attack each other. The problem is modeled as follows:
-
-- Coding: the state is represented in a vector of 8 positions, each representing the position of a queen in a column.
-- Fitness function: returns the number of queens that are not attacking each other. In the case of a tie in the value of the evaluation function, the sample with the lowest number should be considered better.
-- Initial population: Formed by four states selected randomly.
-
-
 An individual is represented by a chromosome, and each gene is the respective position of the queen in the specific column:
 
 
@@ -67,6 +60,8 @@ def createMatrix(numLinhas, numColunas, valor):
 ```
 
 So, the matrix of individual [6,1,0,4,3,0,4,0] can be represented as:
+
+```python
 00100101
 01000000
 00000000
@@ -75,6 +70,8 @@ So, the matrix of individual [6,1,0,4,3,0,4,0] can be represented as:
 00000000
 10000000
 00000000
+```
+
 The fitness function is the number of queens that are not attacking each other. To calculate that, first, we can verify how many queens are attacking each other. The collision function do that:
 
 
