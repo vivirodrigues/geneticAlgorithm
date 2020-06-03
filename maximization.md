@@ -1,14 +1,5 @@
 ## Maximization
 
-Assume that you are trying to find the values from X1 to X4 that maximize the following function: f = 5X1 - 3 X2 X3 + X3 - 2 X4.
-
-You decide to use a genetic algorithm and create the initial population: 0110, 1100, 1011, 0001.
-
-Show and briefly explain how you can create the next two generations of the initial population.
-
-Describe your fitness function, reproduction, selection and mutation process. 
-
-
 The individual is represented as a binary vector, where each value represents X1, X2, X3 and X4, respectively.
 [0,1,1,0]
 The initial population was exhibit as a list, where each item is an individual.
