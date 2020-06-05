@@ -44,8 +44,7 @@ def colision(vector, matrix):
 		# diagonal
 		colisionDiagonally = diagonal(a,b,matrix)
 		total = colisionHorizontally + colisionDiagonally	
-		colision.append(total)
-		#print(colision[i])
+		colision.append(total)		
 		total = 0
 					
 	return colision
@@ -76,7 +75,7 @@ def diagonal(a,b,matrix):
 				
 		if matrix[lin][col]==1 and lin > a:
 			colision += 1
-			#print("colision in", lin, col)
+			
 				
 		lin += 1
 		col += 1
@@ -88,11 +87,9 @@ def diagonal(a,b,matrix):
 	col = b
 
 	while lin >= 0 and col >= 0:
-		#print("lin",lin)
-		#print("col",col)		
+				
 		if matrix[lin][col]==1 and lin < a:
-			colision += 1
-			#print("colision in", lin, col)
+			colision += 1			
 				
 		lin -= 1
 		col += 1
@@ -142,8 +139,7 @@ def bestIndividual(fitness,population):
 		if fitness[i] > var:			
 			var = fitness[i]						
 			id1 = i
-	
-	#print("Best individual:", fitness[id1])
+		
 	return population[id1]
 
 # decreases all aptitude values by the minimum value
