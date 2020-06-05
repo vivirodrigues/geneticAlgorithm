@@ -81,17 +81,17 @@ def roulette(fitness,randomNumber,population):
 			return population[a]
 
 # linear normalization
-#def linearNormFuction(fitness):
+def linearNormFuction(fitness):
 	
-#	idSort = np.argsort(fitness)	
-#	N = 20 # increment
-#	i=0
+	idSort = np.argsort(fitness)	
+	N = 20 # increment
+	i=0
 
-#	for idValue in idSort:
-#		fitness[i] = (idValue)* N + 1
-#		i=i+1	
+	for idValue in idSort:
+		fitness[i] = (idValue)* N + 1
+		i=i+1	
 	
-#	return fitness
+	return fitness
 
 def recombinationCrossover(parents,points):
 	
@@ -159,9 +159,9 @@ def selectIndiv(fitness,amount,population):
 
 # 1 : swap mutation
 # 2 : seq swap
-def mutation(individual, points, type):
+def mutation(individual, points, typ):
 	
-	if type == 1:
+	if typ == 1:
 		#print("Individual before swap mutation:", individual)	
 		newIndividual = []
 		value1 = individual[points[0]]
@@ -179,25 +179,27 @@ def mutation(individual, points, type):
 
 		return newIndividual
 
-	elif type == 2:
+	elif typ == 2:
 		
-		first = []
-		#print("Individual before swap mutation:", individual)	
+		#print("Individual before swap mutation:", individual)
+		points.sort()		
 		newIndividual = []		
+		a1 = []
+		a2 = []
+		a3 = []
 
 		for i in range(len(individual)):
 			if i <= points[0]:
-				first.append(individual[i])
-			elif i == points[1]:
-				for a in range(len(first)):
-					newIndividual.append(first[a]) # add the genes at points <= first point 
-				newIndividual.append(individual[i]) # add the gene at current point
+				a1.append(individual[i])
+			elif i < points[1]:
+				a2.append(individual[i])
 			else:
-				newIndividual.append(individual[i])
-		
+				a3.append(individual[i])
+			
+		newIndividual = a3 + a2 + a1
 		#print("Individual after swap mutation:", newIndividual)
 
-		return newIndividual		
+		return newIndividual
 
 def nextGeneration(aptitude, lastGen):
 
